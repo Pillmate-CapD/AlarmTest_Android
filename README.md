@@ -75,4 +75,8 @@
   - setShowWhenLocked(true) : 잠금 화면 위에 액티비티를 표시할 수 있도록 허용
   - setTurnScreenOn(true) : 잠긴 화면이나 꺼진 화면에서 알람이 울릴 때 화면이 켜지도록 함
   - keyguardManager.requestDismissKeyguard(this, null) : Android 12 이상에서 잠금 화면을 자동으로 해제해주어 알람을 볼 수 있도록 함 
-  
+</br>
+
+### 추후에 확인해볼 사항들
+1) 알람 울릴 때 소리나 진동 관련 부분
+2) 약 알람을 울릴 때 이미지나 약의 정보를 서버로부터 받아올텐데 해당 부분이 잘 연동되는 지

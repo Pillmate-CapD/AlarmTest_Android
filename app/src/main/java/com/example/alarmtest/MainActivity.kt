@@ -2,81 +2,68 @@ package com.example.alarmtest
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
-import android.util.Log
-import android.widget.Button
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.alarmtest.databinding.ActivityMainBinding
 import java.util.Calendar
 
+import android.app.TimePickerDialog
+import android.widget.TimePicker
+
+
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    private var alarmHour = 0
+    private var alarmMinute = 0
+    private lateinit var alarmCalendar: Calendar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val setAlarmButton: Button = findViewById(R.id.set_alarm_button)
-        setAlarmButton.setOnClickListener {
+        binding.alarmButton.setOnClickListener {
             setAlarm()
         }
     }
 
     private fun setAlarm() {
-        Log.d(TAG, "setAlarm: Setting alarm")
+        alarmCalendar = Calendar.getInstance()
+        alarmCalendar.timeInMillis = System.currentTimeMillis()
+        alarmCalendar.add(Calendar.SECOND, 30) // 30초 후로 설정
 
+        // 시간, 분, 초 설정
+        val alarmHour = alarmCalendar.get(Calendar.HOUR_OF_DAY)
+        val alarmMinute = alarmCalendar.get(Calendar.MINUTE)
+        val alarmSecond = alarmCalendar.get(Calendar.SECOND)
+
+        // 알람 설정 시간을 로그로 표시
+        val formattedTime = "%02d:%02d:%02d".format(alarmHour, alarmMinute, alarmSecond)
+        println("알람이 설정되었습니다. 설정 시간: $formattedTime")
+
+        val alarmIntent = Intent(applicationContext, AlarmReceiver::class.java)
+        alarmIntent.action = AlarmReceiver.ACTION_RESTART_SERVICE
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(this, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            0,
-            alarmIntent,
-            PendingIntent.FLAG_IMMUTABLE
+        val alarmCallPendingIntent = PendingIntent.getBroadcast(
+            this@MainActivity, 0, alarmIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // FLAG_IMMUTABLE 추가
         )
 
-        // 알람을 10초 후로 설정 (테스트를 위해)
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.SECOND, 10)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val exactAlarmSupported = alarmManager.canScheduleExactAlarms()
-            Log.d(TAG, "setAlarm: Exact alarm supported: $exactAlarmSupported")
-
-            if (exactAlarmSupported) {
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.timeInMillis,
-                    pendingIntent
-                )
-                Log.d(TAG, "setAlarm: Exact alarm scheduled for: ${calendar.time}")
-            } else {
-                // 대체 로직을 구현할 수 있습니다.
-                Log.d(TAG, "setAlarm: Exact alarm not supported. Alternative logic may be needed.")
-            }
-        } else {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                alarmCalendar.timeInMillis,
+                alarmCallPendingIntent
+            )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                pendingIntent
+                alarmCalendar.timeInMillis,
+                alarmCallPendingIntent
             )
-            Log.d(TAG, "setAlarm: Exact alarm scheduled for: ${calendar.time}")
         }
-
-        // Wakelock 획득
-        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        val wakeLock = powerManager.newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK,
-            "MyApp::MyWakelockTag"
-        )
-        wakeLock.acquire(10*60*1000L /*10 minutes*/)
-
-        // 알람 설정 후 WakeLock 해제
-        wakeLock.release()
     }
 }

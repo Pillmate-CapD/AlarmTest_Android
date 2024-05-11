@@ -5,10 +5,14 @@ import android.content.Intent
 
 
 class AlarmReceiver : BroadcastReceiver() {
+    companion object {
+        const val ACTION_RESTART_SERVICE = "Restart"
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
-        // 알람이 울릴 때 알람 액티비티를 시작
-        val alarmIntent = Intent(context, AlarmActivity::class.java)
-        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(alarmIntent)
+        if (intent.action == ACTION_RESTART_SERVICE) {
+            val inIntent = Intent(context, AlarmService::class.java)
+            context.startService(inIntent)
+        }
     }
 }

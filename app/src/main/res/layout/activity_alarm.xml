@@ -8,35 +8,19 @@
     tools:context=".AlarmActivity">
 
     <TextView
-        android:id="@+id/text_alarm_message"
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="알람이 울립니다!"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_centerInParent="true"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/dismiss_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp" />
-
-    <Button
-        android:id="@+id/btn_dismiss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="알람 해제"
-        android:layout_below="@id/text_alarm_message"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentEnd="true"
-        android:onClick="dismissAlarm" />
-
-    <Button
-        android:id="@+id/btn_snooze"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="일시 중지"
-        android:layout_below="@id/btn_dismiss"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentEnd="true"
-        android:onClick="snoozeAlarm" />
+        android:text="Dismiss Alarm" />
 
 </RelativeLayout>

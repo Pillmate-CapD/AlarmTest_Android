@@ -1,26 +1,28 @@
 package com.example.alarmtest
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.app.Service
 import android.app.Service.START_STICKY
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import java.security.Provider
+import java.util.Calendar
 
 class AlarmService : Service() {
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // AlarmActivity 실행
-        val alarmActivityIntent = Intent(this, AlarmActivity::class.java)
-        alarmActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(alarmActivityIntent)
-
-        // 서비스를 종료하여 메모리에서 제거
-        stopSelf()
-
-        // START_STICKY를 반환하여 시스템이 강제로 서비스를 종료한 경우 재시작 요청
-        return START_STICKY
-    }
+    private val TAG = "TAG+Service"
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d(TAG, "AlarmService")
+        val alarmIntent = Intent(applicationContext, AlarmActivity::class.java)
+        startActivity(alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        return super.onStartCommand(intent, flags, startId)
     }
 }

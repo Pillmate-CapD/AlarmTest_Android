@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
@@ -23,7 +24,8 @@
         <activity
             android:name=".AlarmActivity"
             android:exported="true"
-            android:showWhenLocked="true"
+            android:theme="@style/Theme.AlarmTest"
+            android:showOnLockScreen="true"
             android:turnScreenOn="true">
         </activity>
 
@@ -36,17 +38,24 @@
             </intent-filter>
         </activity>
 
+        <!--
         <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.SCHEDULE_EXACT_ALARM">
+            android:permission="android.permission.USE_EXACT_ALARM">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.TIME_SET" />
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </receiver>
+        -->
+
+        <service android:name=".AlarmService"
+            android:enabled="true"
+            android:exported="true"/>
+        <receiver android:name=".AlarmReceiver"/>
     </application>
 
 </manifest>

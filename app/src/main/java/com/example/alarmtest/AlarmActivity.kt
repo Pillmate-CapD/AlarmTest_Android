@@ -13,12 +13,15 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alarmtest.databinding.ActivityAlarmBinding
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class AlarmActivity : AppCompatActivity() {
     private lateinit var calendar: Calendar
     private lateinit var dismissButton: Button
     private lateinit var timeText: TextView
+    private lateinit var dateText: TextView
     private lateinit var powerManager: PowerManager
     private var flag = true
 
@@ -29,6 +32,7 @@ class AlarmActivity : AppCompatActivity() {
         calendar = Calendar.getInstance()
         dismissButton = findViewById(R.id.dismiss_button)
         timeText = findViewById(R.id.time)
+        dateText = findViewById(R.id.date)
         powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
 
         turnScreenOnAndKeyguardOff()
@@ -56,17 +60,21 @@ class AlarmActivity : AppCompatActivity() {
     private fun updateTimeText() {
         val hourOfDay = calendar[Calendar.HOUR_OF_DAY]
         val minute = calendar[Calendar.MINUTE]
-        val second = calendar[Calendar.SECOND]
-        val timeString = if (hourOfDay in 1..11) {
-            "AM $hourOfDay:$minute:$second"
+        val timeString: String
+
+        if (hourOfDay in 1..11) {
+            timeString = "$hourOfDay:$minute"
         } else if (hourOfDay == 12) {
-            "PM $hourOfDay:$minute:$second"
-        } else if (hourOfDay in 13..23) {
-            "PM ${hourOfDay - 12}:$minute:$second"
-        } else { // hourOfDay == 0
-            "AM 0:$minute:$second"
+            timeString = "$hourOfDay:$minute"
+        } else {
+            timeString = "${hourOfDay + 12}:$minute"
         }
+
         timeText.text = timeString
+
+        val dateFormat = SimpleDateFormat("MM월 dd일 EEEE", Locale.getDefault())
+        val dateString = dateFormat.format(calendar.time)
+        dateText.text = dateString
     }
 
     @SuppressLint("NewApi")

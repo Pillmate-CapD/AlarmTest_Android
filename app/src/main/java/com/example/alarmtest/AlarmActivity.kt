@@ -62,12 +62,23 @@ class AlarmActivity : AppCompatActivity() {
         val minute = calendar[Calendar.MINUTE]
         val timeString: String
 
-        if (hourOfDay in 1..11) {
-            timeString = "$hourOfDay:$minute"
-        } else if (hourOfDay == 12) {
-            timeString = "$hourOfDay:$minute"
+        val formattedMinute = if (minute < 10) {
+            "0$minute"
         } else {
-            timeString = "${hourOfDay + 12}:$minute"
+            "$minute"
+        }
+
+        if (hourOfDay in 1..11) {
+            timeString = "$hourOfDay:$formattedMinute"
+        } else if (hourOfDay == 12) {
+            timeString = "$hourOfDay:$formattedMinute"
+        } else {
+            val formattedHour = if (hourOfDay > 12) {
+                hourOfDay - 12
+            } else {
+                hourOfDay
+            }
+            timeString = "$formattedHour:$formattedMinute"
         }
 
         timeText.text = timeString
@@ -76,7 +87,6 @@ class AlarmActivity : AppCompatActivity() {
         val dateString = dateFormat.format(calendar.time)
         dateText.text = dateString
     }
-
     @SuppressLint("NewApi")
     private fun turnScreenOnAndKeyguardOff() {
         window.addFlags(

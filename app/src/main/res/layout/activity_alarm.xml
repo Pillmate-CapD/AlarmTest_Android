@@ -11,16 +11,37 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="24sp" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="94dp"
+        android:layout_marginEnd="112dp"
+        android:fontFamily="@font/sfprodisplaymedium"
+        android:text="12:00"
+        android:textColor="@color/black"
+        android:textSize="76sp" />
 
-    <Button
-        android:id="@+id/dismiss_button"
+    <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Dismiss Alarm" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-34dp"
+        android:layout_marginEnd="146dp"
+        android:fontFamily="@font/sfprodisplaymedium"
+        android:text="4월 10일 수요일"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/dismiss_button"
+        android:layout_width="240dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/date"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"
+        android:text="약 먹으러 가기" />
 
 </RelativeLayout>

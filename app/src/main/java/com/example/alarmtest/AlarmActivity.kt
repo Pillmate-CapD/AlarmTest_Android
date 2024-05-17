@@ -13,26 +13,25 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alarmtest.databinding.ActivityAlarmBinding
+import com.example.alarmtest.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 class AlarmActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAlarmBinding
     private lateinit var calendar: Calendar
-    private lateinit var dismissButton: Button
-    private lateinit var timeText: TextView
-    private lateinit var dateText: TextView
     private lateinit var powerManager: PowerManager
     private var flag = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_alarm)
+        binding = ActivityAlarmBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         calendar = Calendar.getInstance()
-        dismissButton = findViewById(R.id.dismiss_button)
-        timeText = findViewById(R.id.time)
-        dateText = findViewById(R.id.date)
+//        timeText = findViewById(R.id.time)
+//        dateText = findViewById(R.id.date)
         powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
 
         turnScreenOnAndKeyguardOff()
@@ -51,7 +50,7 @@ class AlarmActivity : AppCompatActivity() {
             }
         }.start()
 
-        dismissButton.setOnClickListener {
+        binding.dismissButton.setOnClickListener {
             flag = false
             finish()
         }
@@ -81,11 +80,11 @@ class AlarmActivity : AppCompatActivity() {
             timeString = "$formattedHour:$formattedMinute"
         }
 
-        timeText.text = timeString
+        binding.time.text = timeString
 
         val dateFormat = SimpleDateFormat("MM월 dd일 EEEE", Locale.getDefault())
         val dateString = dateFormat.format(calendar.time)
-        dateText.text = dateString
+        binding.date.text = dateString
     }
     @SuppressLint("NewApi")
     private fun turnScreenOnAndKeyguardOff() {

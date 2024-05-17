@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/day_recy"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="일"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/notosanskrmedium"/>
+
+    <View
+        android:id="@+id/view_col"
+        app:layout_constraintTop_toBottomOf="@+id/day_recy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/circle_view"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        />
+
+    <TextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_col"
+        android:id="@+id/date_recy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/notosanskrmedium"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
